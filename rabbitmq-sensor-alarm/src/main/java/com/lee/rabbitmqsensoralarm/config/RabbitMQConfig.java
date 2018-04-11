@@ -1,10 +1,7 @@
 package com.lee.rabbitmqsensoralarm.config;
 
 import com.lee.rabbitmqsensoralarm.service.RabbitMQSensorAlarmReceiverService;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
@@ -22,13 +19,13 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(exchange);
+    public DirectExchange exchange() {
+        return new DirectExchange(exchange);
     }
 
     @Bean
-    public Binding binding(Queue sensorCommunicationQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(sensorCommunicationQueue).to(exchange).with("lee.alarm.sensor.#");
+    public Binding binding(Queue sensorCommunicationQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(sensorCommunicationQueue).to(exchange).with("sensor.alarm");
     }
 
     @Bean
